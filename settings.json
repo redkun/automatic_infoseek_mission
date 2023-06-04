@@ -1,0 +1,26 @@
+{
+    "CHROMEDRIVER": ".driver/chromedriver.exe",
+    "COOKIES_FILE": "infoseek.pkl",
+    "WEB_URL": "https://www.infoseek.co.jp/",
+    "TIMEOUT": 30,
+    "USER_ID": "",
+    "PASSWORD": "",
+    "POSITION": [
+        0,
+        0
+    ],
+    "WINDOW_SIZE": [
+        1200,
+        1000
+    ],
+    "COMMENT": {
+        "CHROMEDRIVER": "CHROMEDRIVERのパス",
+        "COOKIES_FILE": "クッキーのファイル名",
+        "WEB_URL": "infoseekサイトのURL",
+        "TIMEOUT": "タイムアウト値(秒)",
+        "USER_ID": "楽天のユーザID",
+        "PASSWORD": "楽天のパスワード",
+        "POSITION": "画面を表示する位置",
+        "WINDOW_SIZE": "表示する画面サイズ"
+    }
+}
