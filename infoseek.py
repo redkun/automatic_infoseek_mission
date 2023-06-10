@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -80,6 +81,8 @@ def main():
             )
             isNext = False
             while not isNext:
+                wait.until(EC.presence_of_all_elements_located)
+
                 # ポイント獲得ページへ
                 getPoint = driver.find_element(
                     By.XPATH,
@@ -91,8 +94,26 @@ def main():
                 )
 
                 if getPoint.is_displayed():
-                    getPoint.click()
-                    print("ポイントを獲得してください。")
+                    getPoint.click()  # ポイント獲得ページへ遷移
+                    time.sleep(3)
+
+                    # バツボタン画像
+                    getBatsuButton = driver.find_element(
+                        By.XPATH,
+                        '//*[@id="gn_interstitial_close_icon"]',
+                    )
+                    if getBatsuButton.is_displayed():
+                        getBatsuButton.click()
+
+                        # ポイント獲得
+                        getPointGetButton = driver.find_element(
+                            By.XPATH,
+                            "/html/body/div[1]/div/div[3]/div/section/section[1]/div[2]/ul/li/div[2]/a",
+                        )
+                        if getPointGetButton.is_displayed():
+                            getPointGetButton.click()
+
+                    print("ポイントを確認してください。")
                     os.system("PAUSE")
                     exit()
                 elif nextArticle.is_displayed():
@@ -120,7 +141,7 @@ def argument():
         ret["start_article"] = int(args[1])  # 開始する記事
         ret["end_article"] = int(args[2]) + 1  # 記事の数
         ret["category"] = args[3]  # カテゴリ
-        if ret["start_article"] >= ret["end_article"] - 1:
+        if ret["start_article"] >= ret["end_article"]:
             print("記事の開始終了を確認してください")
             exit()
     return ret

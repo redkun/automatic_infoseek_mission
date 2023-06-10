@@ -1,0 +1,6 @@
+# settings.json ファイルは除外
+/settings.json
+# *.pkl ファイルは除外
+/*.pkl
+# __pycache__は除外
+/__pycache__/
