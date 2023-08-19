@@ -1,5 +1,4 @@
 {
-    "CHROMEDRIVER": ".driver/chromedriver.exe",
     "COOKIES_FILE": "infoseek.pkl",
     "WEB_URL": "https://www.infoseek.co.jp/",
     "TIMEOUT": 30,
@@ -14,7 +13,6 @@
         1000
     ],
     "COMMENT": {
-        "CHROMEDRIVER": "CHROMEDRIVERのパス",
         "COOKIES_FILE": "クッキーのファイル名",
         "WEB_URL": "infoseekサイトのURL",
         "TIMEOUT": "タイムアウト値(秒)",

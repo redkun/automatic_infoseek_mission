@@ -7,6 +7,7 @@ import sys, pickle, os, json
 import urlOpen
 import subprocess
 from subprocess import PIPE
+from selenium.common.exceptions import NoSuchElementException
 
 
 def main():
@@ -95,7 +96,7 @@ def main():
 
                 if getPoint.is_displayed():
                     getPoint.click()  # ポイント獲得ページへ遷移
-                    time.sleep(3)
+                    time.sleep(5)
 
                     # バツボタン画像
                     getBatsuButton = driver.find_element(
@@ -106,9 +107,13 @@ def main():
                         getBatsuButton.click()
 
                         # ポイント獲得
+                        driver.execute_script(
+                            "window.scrollBy(0, document.body.scrollHeight);"
+                        )
+                        wait.until(EC.presence_of_all_elements_located)
                         getPointGetButton = driver.find_element(
                             By.XPATH,
-                            "/html/body/div[1]/div/div[3]/div/section/section[1]/div[2]/ul/li/div[2]/a",
+                            "/html/body/div[1]/div/div[3]/div/section/section[1]/div[3]/ul/li/div[2]/a",
                         )
                         if getPointGetButton.is_displayed():
                             getPointGetButton.click()

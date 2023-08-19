@@ -4,7 +4,6 @@ Infoseekミッションの自動化
 ## 使用方法
 - pythonをインストールしてパスを通しておく。
 - Seleniumをインストールする。
-- driverフォルダ内にCHROMEのバージョンに合ったchromedriverを[ここ](https://chromedriver.chromium.org/downloads)からダウンロードし入れる。
 - settings_sample.jsonをsettings.jsonに変更し楽天のユーザIDとパスワードを記入する
  
 ## 実行
