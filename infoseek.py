@@ -7,7 +7,6 @@ import sys, pickle, os, json
 import urlOpen
 import subprocess
 from subprocess import PIPE
-from selenium.common.exceptions import NoSuchElementException
 
 
 def main():
@@ -70,7 +69,16 @@ def main():
         driver.get(u)
         print("「{}」カテゴリの {}番目の記事".format(article_conf["category"], articleNo))
         articleNo += 1
+      
+        #「この記事にリアクションしよう！」の要素を取得
+        reaction = driver.find_element(By.XPATH, '//*[@id="reaction-icon-container"]/div[1]/div[1]')
 
+        if reaction.is_displayed():
+          # いいねボタン押下
+          iine = driver.find_element(By.XPATH, '//*[@id="reaction-icon-container"]/ul/li[3]/button')
+          if iine.is_displayed():
+              driver.execute_script('arguments[0].click();', iine) # JavaScriptによってクリック
+        
         # 一番下までスクロール
         driver.execute_script("window.scrollBy(0, document.body.scrollHeight);")
 
