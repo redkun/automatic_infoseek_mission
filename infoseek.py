@@ -19,7 +19,9 @@ def main():
 
     # サイトを開く
     driver = urlOpen.url_open(conf)
-    wait = WebDriverWait(driver=driver, timeout=conf["TIMEOUT"])  # タイムアウト時間の設定
+    wait = WebDriverWait(
+        driver=driver, timeout=conf["TIMEOUT"]
+    )  # タイムアウト時間の設定
     wait_article = WebDriverWait(driver=driver, timeout=2)  # タイムアウト時間の設定
 
     # クッキーファイルの有無
@@ -69,18 +71,26 @@ def main():
     articleNo = article_conf["start_article"]
     for u in URLs:
         driver.get(u)
-        print("「{}」カテゴリの {}番目の記事".format(article_conf["category"], articleNo))
+        print(
+            "「{}」カテゴリの {}番目の記事".format(article_conf["category"], articleNo)
+        )
         articleNo += 1
-      
-        #「この記事にリアクションしよう！」の要素を取得
-        reaction = driver.find_element(By.XPATH, '//*[@id="reaction-icon-container"]/div[1]/div[1]')
+
+        # 「この記事にリアクションしよう！」の要素を取得
+        reaction = driver.find_element(
+            By.XPATH, '//*[@id="reaction-icon-container"]/div[1]/div[1]'
+        )
 
         if reaction.is_displayed():
-          # いいねボタン押下
-          iine = driver.find_element(By.XPATH, '//*[@id="reaction-icon-container"]/ul/li[3]/button')
-          if iine.is_displayed():
-              driver.execute_script('arguments[0].click();', iine) # JavaScriptによってクリック
-        
+            # いいねボタン押下
+            iine = driver.find_element(
+                By.XPATH, '//*[@id="reaction-icon-container"]/ul/li[3]/button'
+            )
+            if iine.is_displayed():
+                driver.execute_script(
+                    "arguments[0].click();", iine
+                )  # JavaScriptによってクリック
+
         # 一番下までスクロール
         driver.execute_script("window.scrollBy(0, document.body.scrollHeight);")
 
