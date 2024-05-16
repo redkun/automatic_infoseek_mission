@@ -17,6 +17,29 @@ def url_open(conf):
     driver.set_window_size(
         conf["WINDOW_SIZE"][0], conf["WINDOW_SIZE"][1]
     )  # カレントウインドウのサイズ
+
+    driver.execute_cdp_cmd("Network.enable", {})
+    driver.execute_cdp_cmd(
+        "Network.setBlockedURLs",
+        {
+            "urls": [
+                "zimg.jp",
+                "amazon.co.jp",
+                "googlesyndication.com",
+                "rakuten-static.com",
+                "googlesyndication.com",
+                "admatrix.jp",
+                "gmossp-sp.jp",
+                "adnxs-simple.com",
+                "ladsp.com",
+                "rakuten.co.jp",
+                "*.png",
+                "*.jpg",
+                "*.gif",
+            ]
+        },
+    )
+
     driver.get(conf["WEB_URL"])
 
     return driver
