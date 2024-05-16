@@ -48,6 +48,8 @@ def main():
     )
     driver.find_element(By.LINK_TEXT, article_conf["category"]).click()
 
+    time.sleep(5)  # 広告を見るための暫定処置
+
     # URLの一覧を取得
     URLs = []
     for articleNo in range(
