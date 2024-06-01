@@ -7,6 +7,7 @@ import sys, pickle, os, json
 import urlOpen
 import subprocess
 from subprocess import PIPE
+from selenium.common.exceptions import NoSuchElementException
 
 
 def main():
@@ -40,17 +41,48 @@ def main():
             (By.XPATH, '//*[@id="ranking-category-all"]/div[2]/a')
         )
     )
+    time.sleep(3)
 
     # 一覧へ押下
     driver.find_element(By.XPATH, '//*[@id="ranking-category-all"]/div[2]/a').click()
+
+    # 広告を見るための暫定処置
+    print("START")
+    try:
+        elem = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (By.XPATH, "/html/body/div[3]/div[1]/div[2]/div/div[3]/button/div[2]/i")
+            )
+        )
+        elem.click()
+        time.sleep(6)
+        driver.switch_to.frame("google_ads_iframe_\/7727\/Infoseek\/News\/Offerwall_0")
+
+        elements = [
+            (By.ID, "dismiss-button-element"),
+            (By.ID, "dismiss-button"),
+            (By.XPATH, '//*[@id="close-button"]'),
+        ]
+
+        for i, element_locator in enumerate(elements):
+            try:
+                element = WebDriverWait(driver, 3).until(
+                    EC.presence_of_element_located(element_locator)
+                )
+                if element.is_displayed():
+                    element.click()
+                    break
+            except (NoSuchElementException, TimeoutException):
+                continue
+    except TimeoutException:
+        print("TimeoutException: 広告が見つかりませんでした。")
+    driver.switch_to.default_content()
 
     # トピック選択
     wait.until(
         EC.visibility_of_all_elements_located((By.LINK_TEXT, article_conf["category"]))
     )
     driver.find_element(By.LINK_TEXT, article_conf["category"]).click()
-
-    time.sleep(5)  # 広告を見るための暫定処置
 
     # URLの一覧を取得
     URLs = []
