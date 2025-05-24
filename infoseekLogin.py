@@ -21,7 +21,11 @@ wait = WebDriverWait(driver=driver, timeout=conf["TIMEOUT"])  # タイムアウ�
 
 # ログイン
 if driver.find_element(By.XPATH, '//*[@id="loginBox"]/p[1]/a'):
+    print("Press any key to continue...")
+    input()  # 任意のキーが押されるまで待機
     driver.find_elements(By.XPATH, '//*[@id="loginBox"]/p[1]/a')[0].click()  # ログインボタン押下
+    print("Press any key to continue...")
+    input()  # 任意のキーが押されるまで待機   
     wait.until(EC.visibility_of_all_elements_located((By.ID, "user_id")))
     texts = driver.find_element(By.ID, "user_id")
     texts.send_keys(conf["USER_ID"])

@@ -8,6 +8,10 @@ import urlOpen
 import subprocess
 from subprocess import PIPE
 from selenium.common.exceptions import NoSuchElementException
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def main():
@@ -48,35 +52,39 @@ def main():
 
     # 広告を見るための暫定処置
     print("START")
-    try:
-        elem = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located(
-                (By.XPATH, "/html/body/div[3]/div[1]/div[2]/div/div[3]/button/div[2]/i")
-            )
-        )
-        elem.click()
-        time.sleep(6)
-        driver.switch_to.frame("google_ads_iframe_\/7727\/Infoseek\/News\/Offerwall_0")
+    wait_for_keypress()
+    # time.sleep(30)
 
-        elements = [
-            (By.ID, "dismiss-button-element"),
-            (By.ID, "dismiss-button"),
-            (By.XPATH, '//*[@id="close-button"]'),
-        ]
+    ### 調整が必要
+    # try:
+    #     elem = WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located(
+    #             (By.XPATH, "/html/body/div[3]/div[1]/div[2]/div/div[3]/button/div[2]/i")
+    #         )
+    #     )
+    #     elem.click()
+    #     time.sleep(6)
+    #     driver.switch_to.frame("google_ads_iframe_\/7727\/Infoseek\/News\/Offerwall_0")
 
-        for i, element_locator in enumerate(elements):
-            try:
-                element = WebDriverWait(driver, 3).until(
-                    EC.presence_of_element_located(element_locator)
-                )
-                if element.is_displayed():
-                    element.click()
-                    break
-            except (NoSuchElementException, TimeoutException):
-                continue
-    except TimeoutException:
-        print("TimeoutException: 広告が見つかりませんでした。")
-    driver.switch_to.default_content()
+    #     elements = [
+    #         (By.ID, "dismiss-button-element"),
+    #         (By.ID, "dismiss-button"),
+    #         (By.XPATH, '//*[@id="close-button"]'),
+    #     ]
+
+    #     for i, element_locator in enumerate(elements):
+    #         try:
+    #             element = WebDriverWait(driver, 3).until(
+    #                 EC.presence_of_element_located(element_locator)
+    #             )
+    #             if element.is_displayed():
+    #                 element.click()
+    #                 break
+    #         except (NoSuchElementException, TimeoutException):
+    #             continue
+    # except TimeoutException:
+    #     print("TimeoutException: 広告が見つかりませんでした。")
+    # driver.switch_to.default_content()
 
     # トピック選択
     wait.until(
@@ -85,6 +93,7 @@ def main():
     driver.find_element(By.LINK_TEXT, article_conf["category"]).click()
 
     # URLの一覧を取得
+    time.sleep(1)
     URLs = []
     for articleNo in range(
         article_conf["start_article"],
@@ -95,7 +104,7 @@ def main():
             By.XPATH,
             "/html/body/div[1]/div/div[3]/div/section/section/div/ul/li["
             + str(articleNo)
-            + "]/div[2]/a",
+            + "]/a",
         ).get_attribute("href")
         URLs.append(URL)
 
@@ -150,11 +159,16 @@ def main():
                     getPoint.click()  # ポイント獲得ページへ遷移
                     time.sleep(5)
 
-                    # バツボタン画像
-                    getBatsuButton = driver.find_element(
-                        By.XPATH,
-                        '//*[@id="gn_interstitial_close_icon"]',
-                    )
+                    # バツボタンがあればクリック、なければ無視
+                    try:
+                        getBatsuButton = driver.find_element(
+                            By.XPATH,
+                            '//*[@id="gn_interstitial_close_icon"]',
+                        )
+                        if getBatsuButton.is_displayed():
+                            getBatsuButton.click()
+                    except NoSuchElementException:
+                        pass  # 要素がない場合は無視
                     if getBatsuButton.is_displayed():
                         getBatsuButton.click()
 
@@ -181,6 +195,10 @@ def main():
 
     driver.close()
 
+def wait_for_keypress():
+    print("Press any key to continue...")
+    input()  # 任意のキーが押されるまで待機
+
 
 def argument():
     ret = {}
@@ -202,7 +220,6 @@ def argument():
             print("記事の開始終了を確認してください")
             exit()
     return ret
-
 
 if __name__ == "__main__":
     main()
