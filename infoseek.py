@@ -86,11 +86,8 @@ def main():
     #     print("TimeoutException: 広告が見つかりませんでした。")
     # driver.switch_to.default_content()
 
-    # トピック選択
-    wait.until(
-        EC.visibility_of_all_elements_located((By.LINK_TEXT, article_conf["category"]))
-    )
-    driver.find_element(By.LINK_TEXT, article_conf["category"]).click()
+    # トピックを開く
+    driver.find_element(By.XPATH, f"//a[contains(text(), '{article_conf["category"]}')]").click()
 
     # URLの一覧を取得
     time.sleep(1)
