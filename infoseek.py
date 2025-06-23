@@ -109,6 +109,7 @@ def main():
     articleNo = article_conf["start_article"]
     for u in URLs:
         driver.get(u)
+        time.sleep(2)
         print(
             '\033[32m'+"「{}」カテゴリの {}番目の記事".format(article_conf["category"], articleNo)+'\033[0m'
         )
