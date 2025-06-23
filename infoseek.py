@@ -110,7 +110,7 @@ def main():
     for u in URLs:
         driver.get(u)
         print(
-            "「{}」カテゴリの {}番目の記事".format(article_conf["category"], articleNo)
+            '\033[32m'+"「{}」カテゴリの {}番目の記事".format(article_conf["category"], articleNo)+'\033[0m'
         )
         articleNo += 1
 
@@ -193,7 +193,7 @@ def main():
     driver.close()
 
 def wait_for_keypress():
-    print("Press any key to continue...")
+    print('\033[31m'+"Press any key to continue..."+'\033[0m')
     input()  # 任意のキーが押されるまで待機
 
 
